@@ -2,9 +2,6 @@ import React from "react";
 import {
   AbsoluteFill,
   useCurrentFrame,
-  useVideoConfig,
-  interpolate,
-  spring,
   Sequence,
   Img,
   staticFile,
@@ -18,227 +15,22 @@ import { AskAITransition } from "./AskAITransition";
 import { LogoIntro } from "../LogoIntro";
 import { Outro } from "../Outro";
 
-// Scene timing configuration (42 seconds = 1260 frames @ 30fps)
+// Scene timing configuration (47.5 seconds = 1426 frames @ 30fps)
 // Includes ASK AI click transition before AI Chat
 const SCENES = {
-  intro: { start: 0, duration: 90 },              // 3s - Logo + tagline
-  discover: { start: 90, duration: 110 },         // 3.7s - Event discovery
-  bracket: { start: 200, duration: 110 },         // 3.7s - Bracket system
-  notifications: { start: 310, duration: 150 },   // 5s - Liquid Glass Notifications
-  integrate: { start: 460, duration: 110 },       // 3.7s - Start.gg + Challonge
-  automate: { start: 570, duration: 110 },        // 3.7s - Automation/Bots
-  askAI: { start: 680, duration: 60 },            // 2s - ASK AI click transition
-  aiChat: { start: 740, duration: 150 },          // 5s - AI Bot Chat
-  community: { start: 890, duration: 90 },        // 3s - Community + Customize
-  alerts: { start: 980, duration: 90 },           // 3s - Smart Alerts
-  news: { start: 1070, duration: 100 },           // 3.3s - News
-  outro: { start: 1170, duration: 90 },           // 3s - CTA
-};
-
-// Intro scene with logo
-const IntroScene: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const logoScale = spring({
-    frame,
-    fps,
-    config: { damping: 12, stiffness: 80, mass: 0.8 },
-  });
-
-  const taglineOpacity = spring({
-    frame: frame - 25,
-    fps,
-    config: { damping: 15, stiffness: 100 },
-  });
-
-  const glowPulse = Math.sin(frame * 0.1) * 0.3 + 0.7;
-
-  return (
-    <AbsoluteFill
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #0a0a0a 0%, #1a0f00 50%, #0a0a0a 100%)",
-      }}
-    >
-      {/* Ambient glow */}
-      <div
-        style={{
-          position: "absolute",
-          width: 600,
-          height: 600,
-          background: `radial-gradient(circle, rgba(249, 115, 22, ${0.2 * glowPulse}) 0%, transparent 60%)`,
-          filter: "blur(80px)",
-        }}
-      />
-
-      {/* Logo */}
-      <div
-        style={{
-          transform: `scale(${logoScale})`,
-          marginBottom: 40,
-        }}
-      >
-        <Img
-          src={staticFile("logo.png")}
-          style={{
-            width: 300,
-            height: "auto",
-            filter: "drop-shadow(0 0 40px rgba(249, 115, 22, 0.5))",
-          }}
-        />
-      </div>
-
-      {/* Tagline */}
-      <div
-        style={{
-          opacity: taglineOpacity,
-          transform: `translateY(${interpolate(taglineOpacity, [0, 1], [30, 0])}px)`,
-          textAlign: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 42,
-            fontWeight: 700,
-            fontFamily: "'Inter', sans-serif",
-            color: "#ffffff",
-            letterSpacing: "-0.02em",
-            textShadow: "0 4px 30px rgba(0,0,0,0.5)",
-          }}
-        >
-          The Next Generation of
-        </div>
-        <div
-          style={{
-            fontSize: 52,
-            fontWeight: 800,
-            fontFamily: "'Inter', sans-serif",
-            background: "linear-gradient(135deg, #f97316 0%, #22c55e 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            letterSpacing: "-0.02em",
-            marginTop: 8,
-          }}
-        >
-          Tournament Management
-        </div>
-      </div>
-    </AbsoluteFill>
-  );
-};
-
-// Outro scene with CTA
-const OutroScene: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const entrance = spring({
-    frame,
-    fps,
-    config: { damping: 14, stiffness: 90 },
-  });
-
-  const badgeEntrance = spring({
-    frame: frame - 30,
-    fps,
-    config: { damping: 12, stiffness: 100 },
-  });
-
-  return (
-    <AbsoluteFill
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(135deg, #0a0a0a 0%, #1a0f00 50%, #0a0a0a 100%)",
-      }}
-    >
-      {/* Animated background gradient */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: `radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.1) 0%, transparent 50%)`,
-          transform: `scale(${1 + Math.sin(frame * 0.05) * 0.1})`,
-        }}
-      />
-
-      {/* Logo */}
-      <Img
-        src={staticFile("logo.png")}
-        style={{
-          width: 220,
-          height: "auto",
-          marginBottom: 30,
-          opacity: entrance,
-          transform: `scale(${entrance})`,
-          filter: "drop-shadow(0 0 30px rgba(249, 115, 22, 0.4))",
-        }}
-      />
-
-      {/* CTA Text */}
-      <div
-        style={{
-          textAlign: "center",
-          opacity: entrance,
-          transform: `translateY(${interpolate(entrance, [0, 1], [40, 0])}px)`,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 36,
-            fontWeight: 600,
-            fontFamily: "'Inter', sans-serif",
-            color: "#ffffff",
-            marginBottom: 8,
-          }}
-        >
-          Everything Competitive is Finally Here
-        </div>
-        <div
-          style={{
-            fontSize: 28,
-            fontWeight: 700,
-            fontFamily: "'Inter', sans-serif",
-            background: "linear-gradient(135deg, #f97316 0%, #22c55e 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          brackify.gg
-        </div>
-      </div>
-
-      {/* App store badges */}
-      <div
-        style={{
-          display: "flex",
-          gap: 24,
-          marginTop: 40,
-          opacity: badgeEntrance,
-          transform: `translateY(${interpolate(badgeEntrance, [0, 1], [30, 0])}px)`,
-        }}
-      >
-        <Img
-          src={staticFile("ios.png")}
-          style={{
-            height: 50,
-            width: "auto",
-            filter: "drop-shadow(0 4px 15px rgba(0,0,0,0.3))",
-          }}
-        />
-        <Img
-          src={staticFile("android.png")}
-          style={{
-            height: 50,
-            width: "auto",
-            filter: "drop-shadow(0 4px 15px rgba(0,0,0,0.3))",
-          }}
-        />
-      </div>
-    </AbsoluteFill>
-  );
+  intro:         { start: 0,    duration: 90  },
+  discover:      { start: 90,   duration: 100 },
+  discover2:     { start: 190,  duration: 96  },
+  bracket:       { start: 286,  duration: 110 },
+  notifications: { start: 396,  duration: 120 },
+  integrate:     { start: 516,  duration: 110 },
+  automate:      { start: 626,  duration: 110 },
+  askAI:         { start: 736,  duration: 60  },
+  aiChat:        { start: 796,  duration: 150 },
+  community:     { start: 946,  duration: 190 },
+  alerts:        { start: 1136, duration: 90  },
+  news:          { start: 1226, duration: 100 },
+  outro:         { start: 1326, duration: 100 },
 };
 
 // Main composition
@@ -270,7 +62,7 @@ export const BrackifyLaunch: React.FC = () => {
         <LogoIntro />
       </Sequence>
 
-      {/* SCENE 1:Bracket System */}
+      {/* SCENE 1: Bracket System */}
       <Sequence from={SCENES.discover.start} durationInFrames={SCENES.discover.duration}>
         <AbsoluteFill>
           <PhoneShowcase
@@ -279,16 +71,51 @@ export const BrackifyLaunch: React.FC = () => {
             duration={SCENES.discover.duration}
             showHand={true}
             tapPosition={{ x: 50, y: 60 }}
-            tapFrame={40}
+            tapFrame={90}
             cursorEntryDirection="bottomRight"
             enterAnimation="slideUp"
-            exitAnimation="slideLeft"
+            exitAnimation="none"
+            enableTapSound={true}
+          />
+          <SceneText
+            headline="Simplified Bracket Experience"
+            subtext="Upcoming Brackets, Predictions and live standings"
+            startFrame={5}
+            duration={SCENES.discover.duration - 5}
+            position="left"
+            highlightWords={["Simplified", "Experience"]}
+            textAnimation="bouncyGravity"
+            subtextAnimation="bounceUp"
+          />
+          <FeatureList
+            features={[
+              { icon: "", iconImage: "predictions.png", text: "Live Predictions" },
+              { icon: "", iconImage: "bot.png", text: "Platform Bot Integration" },
+              { icon: "", iconImage: "customization.png", text: "Advanced Seamless Customization" },
+            ]}
+            startFrame={15}
+            position="right"
+            listAnimation="cascade"
+          />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* SCENE 1B: Advanced Bracket System (continued) */}
+      <Sequence from={SCENES.discover2.start} durationInFrames={SCENES.discover2.duration}>
+        <AbsoluteFill>
+          <PhoneShowcase
+            videoSrc="1b.mp4"
+            startFrame={0}
+            duration={SCENES.discover2.duration}
+            showHand={false}
+            enterAnimation="none"
+            exitAnimation="none"
           />
           <SceneText
             headline="Advanced Bracket System"
-            subtext="Predictions, live standings, and a powerful admin panel at your fingertips."
-            startFrame={5}
-            duration={SCENES.discover.duration - 5}
+            subtext="Stunning Bracket view and powerful admin panel at your fingertips."
+            startFrame={0}
+            duration={SCENES.discover2.duration}
             position="left"
             highlightWords={["Advanced", "Bracket"]}
             textAnimation="bouncyGravity"
@@ -300,7 +127,7 @@ export const BrackifyLaunch: React.FC = () => {
               { icon: "", iconImage: "bot.png", text: "Platform Bot Integration" },
               { icon: "", iconImage: "customization.png", text: "Advanced Seamless Customization" },
             ]}
-            startFrame={15}
+            startFrame={0}
             position="right"
             listAnimation="cascade"
           />
@@ -321,7 +148,7 @@ export const BrackifyLaunch: React.FC = () => {
             swipeFrame={70}
             cursorEntryDirection="bottomLeft"
             enterAnimation="slideRight"
-            exitAnimation="slideUp"
+            exitAnimation="none"
           />
           <SceneText
             headline="One Unified Tournament Journey"
@@ -352,22 +179,23 @@ export const BrackifyLaunch: React.FC = () => {
           <PhoneShowcase
             startFrame={0}
             duration={SCENES.notifications.duration}
-            showHand={true}
+            showHand={false}
             tapPosition={{ x: 50, y: 40 }}
-            tapFrame={60}
+            tapFrame={170}
             swipeDirection="down"
             swipeFrame={100}
             cursorEntryDirection="topRight"
-            enterAnimation="scaleUp"
-            exitAnimation="rotateOut"
+            enterAnimation="none"
+            exitAnimation="none"
+            enableSwipeSound={false}
           >
             <PhoneNotifications />
           </PhoneShowcase>
           <SceneText
             headline="Never Miss a Moment"
             subtext="Smart notifications keep you updated on tournaments, brackets, and community activity."
-            startFrame={5}
-            duration={SCENES.notifications.duration - 5}
+            startFrame={0}
+            duration={SCENES.notifications.duration}
             position="left"
             highlightWords={["Never", "Miss"]}
             textAnimation="blurRotate"
@@ -393,11 +221,11 @@ export const BrackifyLaunch: React.FC = () => {
             videoSrc="3.mp4"
             startFrame={0}
             duration={SCENES.integrate.duration}
-            showHand={true}
+            showHand={false}
             tapPosition={{ x: 50, y: 65 }}
             tapFrame={45}
             cursorEntryDirection="right"
-            enterAnimation="rotateIn"
+            enterAnimation="none"
             exitAnimation="slideRight"
           />
           <SceneText
@@ -439,7 +267,7 @@ export const BrackifyLaunch: React.FC = () => {
           />
           <SceneText
             headline="Build Your Legacy"
-            subtext="Showcase your wins, display earned trophies, and let your profile tell your competitive story."
+            subtext="Customize Profile, Showcase your wins, Display earned trophies, and let your profile tell your competitive story."
             startFrame={5}
             duration={SCENES.automate.duration - 5}
             position="right"
@@ -471,12 +299,13 @@ export const BrackifyLaunch: React.FC = () => {
           <PhoneShowcase
             startFrame={0}
             duration={SCENES.aiChat.duration}
-            showHand={true}
+            showHand={false}
             tapPosition={{ x: 70, y: 85 }}
-            tapFrame={50}
+            tapFrame={150}
             cursorEntryDirection="bottomLeft"
             enterAnimation="flipIn"
-            exitAnimation="slideLeft"
+            exitAnimation="none"
+            enableTapSound={false}
           >
             <PhoneAIChat />
           </PhoneShowcase>
@@ -511,10 +340,10 @@ export const BrackifyLaunch: React.FC = () => {
             startFrame={0}
             duration={SCENES.community.duration}
             showHand={true}
-            tapPosition={{ x: 50, y: 45 }}
-            tapFrame={40}
+            tapPosition={{ x: 50, y: 55 }}
+            tapFrame={60}
             cursorEntryDirection="topLeft"
-            enterAnimation="slideDown"
+            enterAnimation="none"
             exitAnimation="rotateOut"
           />
           <SceneText

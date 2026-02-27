@@ -14,7 +14,7 @@ const CHAT_MESSAGES = [
   {
     id: 1,
     type: "user" as const,
-    text: "What tournaments happening week?",
+    text: "Send me tournaments happening this week?",
     delay: 0,
   },
   {

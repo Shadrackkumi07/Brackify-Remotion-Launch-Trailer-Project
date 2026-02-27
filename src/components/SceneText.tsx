@@ -16,7 +16,7 @@ export type SubtextAnimation = "blurFade" | "bounceUp" | "waveReveal" | "scaleIn
 
 // Spring configs for each headline animation
 const HEADLINE_SPRING_CONFIGS: Record<HeadlineAnimation, { damping: number; stiffness: number; mass: number }> = {
-  blurRotate: { damping: 14, stiffness: 120, mass: 0.7 },
+  blurRotate: { damping: 14, stiffness: 420, mass: 0.3 },
   bouncyGravity: { damping: 7, stiffness: 160, mass: 0.8 },
   slideReveal: { damping: 20, stiffness: 200, mass: 0.5 },
   composeScale: { damping: 12, stiffness: 140, mass: 0.6 },
@@ -24,9 +24,9 @@ const HEADLINE_SPRING_CONFIGS: Record<HeadlineAnimation, { damping: number; stif
 
 // Word stagger delays per headline animation
 const HEADLINE_WORD_DELAYS: Record<HeadlineAnimation, number> = {
-  blurRotate: 4,
+  blurRotate: 1,
   bouncyGravity: 5,
-  slideReveal: 2,
+  slideReveal: 1,
   composeScale: 3,
 };
 
@@ -349,7 +349,7 @@ export const SceneText: React.FC<SceneTextProps> = ({
       {subtext && (
         <SubtextWithTypewriter
           text={subtext}
-          startFrame={startFrame + words.length * wordDelay + 5}
+          startFrame={startFrame + words.length * wordDelay + 1}
           position={position}
           isMobile={isMobile}
           subtextColor={subtextColor}

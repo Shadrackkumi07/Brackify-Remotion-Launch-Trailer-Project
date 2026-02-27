@@ -20,6 +20,12 @@ export { MacroZoom, Phone3D, SnapZoomTransition } from "./MacroZoom";
 export { PhoneShowcase, DualPhoneShowcase } from "./PhoneShowcase";
 export { SceneText, FeatureBadge, FeatureList } from "./SceneText";
 export { BrackifyLaunch } from "./BrackifyLaunch";
+export {
+  BRACKIFY_NOVA_DURATION,
+  BRACKIFY_NOVA_FPS,
+  BrackifyLaunchNova,
+  BrackifyLaunchNovaMobile,
+} from "./BrackifyLaunchNova";
 
 // iOS 26 Liquid Glass components
 export { LiquidGlassNotifications } from "./LiquidGlassNotifications";

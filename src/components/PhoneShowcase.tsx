@@ -107,8 +107,8 @@ const PremiumCursor: React.FC<{
 };
 
 // Transition animation types
-type EnterAnimation = "slideUp" | "slideDown" | "slideLeft" | "slideRight" | "scaleUp" | "rotateIn" | "flipIn";
-type ExitAnimation = "slideUp" | "slideDown" | "slideLeft" | "slideRight" | "scaleDown" | "rotateOut" | "flipOut";
+type EnterAnimation = "slideUp" | "slideDown" | "slideLeft" | "slideRight" | "scaleUp" | "rotateIn" | "flipIn" | "none";
+type ExitAnimation = "slideUp" | "slideDown" | "slideLeft" | "slideRight" | "scaleDown" | "rotateOut" | "flipOut" | "none";
 
 interface PhoneShowcaseProps {
   videoSrc?: string;
@@ -190,6 +190,8 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
   // Calculate entrance transforms based on animation type
   const getEntranceTransform = () => {
     switch (enterAnimation) {
+      case "none":
+        return { translateX: 0, translateY: 0, rotate: 0, rotateX: 0, rotateY: 0 };
       case "slideUp":
         return {
           translateX: 0,
@@ -253,6 +255,8 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
   // Calculate exit transforms based on animation type
   const getExitTransform = () => {
     switch (exitAnimation) {
+      case "none":
+        return { translateX: 0, translateY: 0, rotate: 0, rotateX: 0, rotateY: 0 };
       case "slideUp":
         return {
           translateX: 0,
@@ -326,14 +330,18 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
     fps,
     config: { damping: 10, stiffness: 80, mass: 0.6 },
   });
-  const baseScale = enterAnimation === "scaleUp" 
+  const baseScale = enterAnimation === "scaleUp"
     ? interpolate(scaleRaw, [0, 1], [0.2, 1])
+    : enterAnimation === "none"
+    ? 1
     : entranceSpring;
   const exitScale = exitAnimation === "scaleDown"
     ? (1 - exitProgress * 0.5)
     : 1;
   const scale = baseScale * exitScale;
-  const opacity = entranceSpring * (1 - exitProgress);
+  const enterOpacity = enterAnimation === "none" ? 1 : entranceSpring;
+  const exitOpacity = exitAnimation === "none" ? 1 : (1 - exitProgress);
+  const opacity = enterOpacity * exitOpacity;
 
   // Isometric transform
   const rotateY = isIsometric ? -15 : 0;
@@ -423,7 +431,7 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
             radial-gradient(ellipse at 70% 60%, rgba(255, 170, 51, 0.12) 0%, transparent 50%)
           `,
           filter: "blur(90px)",
-          opacity: entranceSpring * 0.8,
+          opacity: enterOpacity * 0.8,
           zIndex: -1,
           transform: `rotate(${rimLightAngle}deg)`,
         }}
@@ -488,6 +496,7 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
               }}
               startFrom={0}
               volume={0}
+              muted
             />
           ) : children ? (
             <div

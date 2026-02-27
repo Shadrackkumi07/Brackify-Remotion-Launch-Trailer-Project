@@ -277,25 +277,9 @@ export const PhoneNotifications: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Zoom phases
-  const zoomIn = interpolate(frame, [0, 25], [1, 1.6], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const zoomOut = interpolate(frame, [35, 55], [1.6, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const currentZoom = frame < 35 ? zoomIn : zoomOut;
-  const panY = interpolate(frame, [0, 25, 35, 55], [0, -60, -60, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  const notifOpacity = interpolate(frame, [50, 65], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const currentZoom = 1;
+  const panY = 0;
+  const notifOpacity = 1;
 
   const gradientRotate = frame * 0.3;
 
@@ -347,7 +331,7 @@ export const PhoneNotifications: React.FC = () => {
               key={notification.id}
               notification={notification}
               index={index}
-              startFrame={60}
+              startFrame={0}
             />
           ))}
         </div>

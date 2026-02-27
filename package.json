@@ -6,12 +6,17 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@react-three/fiber": "9.5.0",
     "@remotion/cli": "4.0.418",
+    "@remotion/tailwind-v4": "4.0.418",
+    "@remotion/three": "4.0.418",
+    "@splinetool/loader": "1.12.57",
+    "@splinetool/r3f-spline": "1.0.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.418",
-    "@remotion/tailwind-v4": "4.0.418",
-    "tailwindcss": "4.0.0"
+    "tailwindcss": "4.0.0",
+    "three": "0.156.1"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.418",
@@ -26,6 +31,9 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
+  },
+  "engines": {
+    "node": ">=18 <22"
   },
   "sideEffects": [
     "*.css"

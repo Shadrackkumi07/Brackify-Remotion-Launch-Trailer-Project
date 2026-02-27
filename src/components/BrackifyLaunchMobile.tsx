@@ -30,6 +30,7 @@ const PHONE_Y_OFFSET = -35;     // Vertical offset in pixels (negative = up, pos
 // ============================================
 const TEXT_CONFIG = {
   scene1: { offsetX: 0, offsetY: 0, subtextColor: "#ffffff" },
+  scene1b: { offsetX: 0, offsetY: 0, subtextColor: "#ffffff" },
   scene2: { offsetX: 0, offsetY: 0, subtextColor: "#11ee09" },
   scene3: { offsetX: 0, offsetY: 0, subtextColor: "#ffffff" },
   scene4: { offsetX: 0, offsetY: 0, subtextColor: "#ffffff" },
@@ -41,22 +42,37 @@ const TEXT_CONFIG = {
 };
 // ============================================
 
-// Scene timing configuration (42 seconds = 1260 frames @ 30fps)
+// Scene timing configuration (47.5 seconds = 1426 frames @ 30fps)
 // Includes ASK AI click transition before AI Chat
 const SCENES = {
   intro: { start: 0, duration: 90 },
-  discover: { start: 90, duration: 110 },
-  bracket: { start: 200, duration: 110 },
-  notifications: { start: 310, duration: 150 },
-  integrate: { start: 460, duration: 110 },
-  automate: { start: 570, duration: 110 },
-  askAI: { start: 680, duration: 60 },
-  aiChat: { start: 740, duration: 150 },
-  community: { start: 890, duration: 90 },
-  alerts: { start: 980, duration: 90 },
-  news: { start: 1070, duration: 100 },
-  outro: { start: 1170, duration: 90 },
+
+  discover: { start: 90, duration: 100 },
+
+  discover2: { start: 190, duration: 96 },
+
+  bracket: { start: 286, duration: 110 },
+
+  notifications: { start: 396, duration: 120 },
+
+  integrate: { start: 516, duration: 110 },
+
+  automate: { start: 626, duration: 110 },   // fixed (was 636)
+
+  askAI: { start: 736, duration: 60 },       // fixed (was 746)
+
+  aiChat: { start: 796, duration: 150 },     // fixed (was 806)
+
+  community: { start: 946, duration: 190 },  // fixed (was 956)
+
+  alerts: { start: 1136, duration: 90 },     // fixed (was 1146)
+
+  news: { start: 1226, duration: 100 },      // fixed (was 1236)
+
+  outro: { start: 1326, duration: 90 },      // fixed (was 1336)
 };
+
+
 
 // Wrapper component to apply mobile scaling and positioning
 const MobilePhoneWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -116,23 +132,53 @@ export const BrackifyLaunchMobile: React.FC = () => {
               duration={SCENES.discover.duration}
               showHand={true}
               tapPosition={{ x: 50, y: 60 }}
-              tapFrame={50}
+              tapFrame={90}
               cursorEntryDirection="bottomRight"
               enterAnimation="slideUp"
-              exitAnimation="slideLeft"
+              exitAnimation="none"
               enableTapSound={true}
             />
           </MobilePhoneWrapper>
           <SceneText
-            headline="Advanced Bracket System"
-            subtext="Predictions, live standings, and a powerful admin panel at your fingertips."
+            headline="Simplified Bracket Experience"
+            subtext="Upcoming Brackets, Predictions and live standings"
             startFrame={5}
             duration={SCENES.discover.duration - 5}
             position="bottom"
-            highlightWords={["Advanced", "Bracket"]}
+            highlightWords={["Simplified", "Experience"]}
             offsetX={TEXT_CONFIG.scene1.offsetX}
             offsetY={TEXT_CONFIG.scene1.offsetY}
             subtextColor={TEXT_CONFIG.scene1.subtextColor}
+            textAnimation="bouncyGravity"
+            subtextAnimation="bounceUp"
+          />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* SCENE 1B: Advanced Bracket System (continued) */}
+      <Sequence from={SCENES.discover2.start} durationInFrames={SCENES.discover2.duration}>
+        <AbsoluteFill>
+          <MobilePhoneWrapper>
+            <PhoneShowcase
+              videoSrc="1b.mp4"
+              startFrame={0}
+              duration={SCENES.discover2.duration}
+              showHand={false}
+              tapFrame={100}
+              enterAnimation="none"
+              exitAnimation="none"
+            />
+          </MobilePhoneWrapper>
+          <SceneText
+            headline="Advanced Bracket System"
+            subtext="Stunning Bracket view and powerful admin panel at your fingertips."
+            startFrame={0}
+            duration={SCENES.discover2.duration}
+            position="bottom"
+            highlightWords={["Advanced", "Bracket"]}
+            offsetX={TEXT_CONFIG.scene1b.offsetX}
+            offsetY={TEXT_CONFIG.scene1b.offsetY}
+            subtextColor={TEXT_CONFIG.scene1b.subtextColor}
             textAnimation="bouncyGravity"
             subtextAnimation="bounceUp"
           />
@@ -154,7 +200,7 @@ export const BrackifyLaunchMobile: React.FC = () => {
               swipeFrame={70}
               cursorEntryDirection="bottomLeft"
               enterAnimation="slideRight"
-              exitAnimation="slideUp"
+              exitAnimation="none"
             />
           </MobilePhoneWrapper>
           <SceneText
@@ -180,12 +226,12 @@ export const BrackifyLaunchMobile: React.FC = () => {
               duration={SCENES.notifications.duration}
               showHand={false}
               tapPosition={{ x: 50, y: 40 }}
-              tapFrame={60}
+              tapFrame={170}
               swipeDirection="down"
               swipeFrame={100}
               cursorEntryDirection="topRight"
-              enterAnimation="scaleUp"
-              exitAnimation="rotateOut"
+              enterAnimation="none"
+              exitAnimation="none"
               enableSwipeSound={false}
             >
               <PhoneNotifications />
@@ -194,8 +240,8 @@ export const BrackifyLaunchMobile: React.FC = () => {
           <SceneText
             headline="Never Miss a Moment"
             subtext="Smart notifications keep you updated."
-            startFrame={5}
-            duration={SCENES.notifications.duration - 5}
+            startFrame={0}
+            duration={SCENES.notifications.duration}
             position="bottom"
             highlightWords={["Never", "Miss"]}
             offsetX={TEXT_CONFIG.scene3.offsetX}
@@ -219,7 +265,7 @@ export const BrackifyLaunchMobile: React.FC = () => {
               tapPosition={{ x: 50, y: 65 }}
               tapFrame={100}
               cursorEntryDirection="right"
-              enterAnimation="rotateIn"
+              enterAnimation="none"
               exitAnimation="slideRight"
             />
           </MobilePhoneWrapper>
@@ -257,7 +303,7 @@ export const BrackifyLaunchMobile: React.FC = () => {
           </MobilePhoneWrapper>
           <SceneText
             headline="Build Your Legacy"
-            subtext="Showcase your wins and earned trophies."
+            subtext="Customize Profile, Showcase your wins, Display earned trophies."
             startFrame={5}
             duration={SCENES.automate.duration - 5}
             position="bottom"
@@ -288,7 +334,7 @@ export const BrackifyLaunchMobile: React.FC = () => {
               tapFrame={150}
               cursorEntryDirection="bottomLeft"
               enterAnimation="flipIn"
-              exitAnimation="slideLeft"
+              exitAnimation="none"
               enableTapSound={false}
             >
               <PhoneAIChat />
@@ -319,10 +365,10 @@ export const BrackifyLaunchMobile: React.FC = () => {
               startFrame={0}
               duration={SCENES.community.duration}
               showHand={true}
-              tapPosition={{ x: 50, y: 45 }}
-              tapFrame={40}
+              tapPosition={{ x: 50, y: 55 }}
+              tapFrame={60}
               cursorEntryDirection="topLeft"
-              enterAnimation="slideDown"
+              enterAnimation="none"
               exitAnimation="rotateOut"
             />
           </MobilePhoneWrapper>
@@ -352,7 +398,7 @@ export const BrackifyLaunchMobile: React.FC = () => {
               duration={SCENES.alerts.duration}
               showHand={true}
               tapPosition={{ x: 50, y: 50 }}
-              tapFrame={40}
+              tapFrame={140}
               cursorEntryDirection="bottomRight"
               enterAnimation="rotateIn"
               exitAnimation="slideUp"
