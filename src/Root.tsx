@@ -18,6 +18,21 @@ import {
   AFFILIATE_PROMO_FPS,
   AffiliatePromo,
 } from "./components/AffiliatePromo";
+import {
+  TEAM_BATTLE_LAUNCH_DURATION,
+  TEAM_BATTLE_LAUNCH_FPS,
+  TeamBattleLaunch,
+} from "./components/TeamBattleLaunch";
+import {
+  FIND_LOCAL_DURATION,
+  FIND_LOCAL_FPS,
+  FindLocal,
+} from "./components/FindLocal";
+import {
+  PROFILE_STATS_DURATION,
+  PROFILE_STATS_FPS,
+  ProfileStats,
+} from "./components/ProfileStats";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -72,6 +87,30 @@ export const RemotionRoot: React.FC = () => {
         component={AffiliatePromo}
         durationInFrames={AFFILIATE_PROMO_DURATION}
         fps={AFFILIATE_PROMO_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="TeamBattleLaunch"
+        component={TeamBattleLaunch}
+        durationInFrames={TEAM_BATTLE_LAUNCH_DURATION}
+        fps={TEAM_BATTLE_LAUNCH_FPS}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="FindLocal"
+        component={FindLocal}
+        durationInFrames={FIND_LOCAL_DURATION}
+        fps={FIND_LOCAL_FPS}
+        width={1080}
+        height={1920}
+      />
+      <Composition
+        id="ProfileStats"
+        component={ProfileStats}
+        durationInFrames={PROFILE_STATS_DURATION}
+        fps={PROFILE_STATS_FPS}
         width={1080}
         height={1920}
       />

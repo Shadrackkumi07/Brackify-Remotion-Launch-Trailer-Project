@@ -26,6 +26,11 @@ export {
   BrackifyLaunchNova,
   BrackifyLaunchNovaMobile,
 } from "./BrackifyLaunchNova";
+export {
+  TEAM_BATTLE_LAUNCH_DURATION,
+  TEAM_BATTLE_LAUNCH_FPS,
+  TeamBattleLaunch,
+} from "./TeamBattleLaunch";
 
 // iOS 26 Liquid Glass components
 export { LiquidGlassNotifications } from "./LiquidGlassNotifications";
